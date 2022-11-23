@@ -24,17 +24,17 @@
   <div class="container">
     <div class="row">
       <div class="col-lg-8 col-md-10 mx-auto">
-        <form method="POST" action="/projects" novalidate>
+        <form method="POST" action="/projects" novalidate  encType="multipart/form-data">
           <div class="control-group">
             <div class="form-group floating-label-form-group controls">
-              <label>Post Title</label>
+              <label>Add Project</label>
               <input type="text" name="title" class="form-control" placeholder="Project title" id="name" required data-validation-required-message="Please enter project title.">
               <p class="help-block text-danger"></p>
             </div>
           </div>
           <div class="control-group">
             <div class="form-group floating-label-form-group controls">
-              <label>Post Detail</label>
+              <label>Project Detail</label>
               <textarea rows="5" name="description" class="form-control" placeholder="Message" id="message" required data-validation-required-message="Please enter a project description."></textarea>
               <p class="help-block text-danger"></p>
             </div>

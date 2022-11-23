@@ -1,7 +1,10 @@
 const express = require('express');
 const mongosee = require('mongoose');
+const fileUpload = require('express-fileupload');
 const ejs = require('ejs');
 const path = require('path');
+const fs = require('fs');
+
 const Post = require('./models/Post');
 const Project = require('./models/Project');
 
@@ -18,6 +21,7 @@ middleware denir. Yani herşey request ve responsun 'middle'ında ortasında yap
 app.use(express.static('public'));
 app.use(express.urlencoded({extended:true}));
 app.use(express.json());
+app.use(fileUpload());
 
 // ROUTES
 app.get('/', async (req, res) => {
@@ -28,20 +32,74 @@ app.get('/', async (req, res) => {
         projects
     });
 });
+
+// BLOG POSTS
+app.get('/postspage', async (req, res) => {
+    const posts = await Post.find({});
+    res.render('posts',{
+        posts
+    });
+}); // okey
+
 app.post('/posts', async (req, res) => {
-    await Post.create(req.body);
+    const uploadDir = 'public/uploads';
+    if (!fs.existsSync(uploadDir)) {
+        fs.mkdirSync(uploadDir)
+    }
+    let uploadImage = req.files.image;
+    let uploadPath = __dirname + '/public/uploads' + uploadImage.name;
+
+    uploadImage.mv(uploadPath, async () => {
+        await Post.create({
+            ...req.body,
+            image: '/uploads' + uploadImage.name,
+        })
+    });
     res.redirect('/');
+}); // okey
+
+app.get('/posts/:id', async (req,res)=>{
+    const post = await Post.findById(req.params.id);
+    res.render('postdetails',{
+        post
+    });
+}); // okey
+
+
+
+// PROJECT 
+app.get('/projectspage', async (req, res) => {
+    const projects = await Project.find({});
+    res.render('projects',{
+        projects
+    });
 });
-app.get('/post', (req,res)=>{
-    res.render('post');
-});
+
 app.post('/projects', async (req, res) => {
-    await Project.create(req.body);
+    const uploadDir = 'public/uploads';
+    if (!fs.existsSync(uploadDir)) {
+        fs.mkdirSync(uploadDir)
+    }
+    let uploadImage = req.files.image;
+    let uploadPath = __dirname + '/public/uploads' + uploadImage.name;
+
+    uploadImage.mv(uploadPath, async () => {
+        await Project.create({
+            ...req.body,
+            image: '/uploads' + uploadImage.name,
+        })
+    });
     res.redirect('/');
 });
-app.get('/project', (req, res) => {
-    res.render('project');
+
+app.get('/projects/:id', async (req,res)=>{
+    const project = await Project.findById(req.params.id);
+    res.render('projectdetails',{
+        project
+    });
 });
+
+
 app.get('/about', (req, res) => {
     res.render('about')
 });

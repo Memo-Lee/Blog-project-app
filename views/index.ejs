@@ -26,41 +26,37 @@
         <div class="col-lg-6 col-md-12 mx-auto">
           <h2 class="text-center">Last shared blogs</h2>
           <hr>
-          <% for(let i=0; i<posts.length; i++) { %>
-          <div class="post-preview">
-            <a href="post.html">
-              <h2 class="post-title">
-                <%= posts[i].title %>
-              </h2>
-              <h3 class="post-subtitle">
-                <%= posts[i].description %>
-              </h3>
-            </a>
-            <p class="post-meta">Posted by
-              <a href="#">Start Bootstrap</a>
-              2022 1 Augtost</p>
-          </div>
-          <% } %>
+          <% posts.forEach(element =>{ %>
+
+            <div class="card" style="width: 18rem;">
+              <img class="card-img-top" src="<%=element.image%>" alt="Card image cap">
+              <div class="card-body">
+                <h5 class="card-title"><%= element.title %></h5>
+                <p class="card-text"><%= element.description %></p>
+                <a href="/posts/<%=element._id%>" class="btn btn-primary">Go somewhere</a>
+              </div>
+            </div>
+
+          <% }) %>
+
         </div>
         
         <div class="col-lg-6 col-md-12 mx-auto">
           <h2 class="text-center">Last shared projects</h2>
           <hr>
-          <% for(let i=0; i<projects.length; i++) { %>
-          <div class="post-preview">
-            <a href="post.html">
-              <h2 class="post-title">
-                <%= projects[i].title %>
-              </h2>
-              <h3 class="post-subtitle">
-                <%= projects[i].description %>
-              </h3>
-            </a>
-            <p class="post-meta">Posted by
-              <a href="#">Start Bootstrap</a>
-              2022 1 Augtost</p>
-          </div>
-          <% } %>
+          <% projects.forEach(element =>{ %>
+
+            <div class="card" style="width: 18rem;">
+              <img class="card-img-top" src="<%=element.image%>" alt="Card image cap">
+              <div class="card-body">
+                <h5 class="card-title"><%= element.title %></h5>
+                <p class="card-text"><%= element.description %></p>
+                <a href="/projects/<%=element._id%>" class="btn btn-primary">Go somewhere</a>
+              </div>
+            </div>
+
+          <% }) %>
+
         </div>
     </div>
     <hr>
