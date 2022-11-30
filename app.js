@@ -6,6 +6,9 @@ const ejs = require('ejs');
 const postController = require('./controllers/blogControllers');
 const projectController = require('./controllers/projectControllers');
 const pageController = require('./controllers/pageControllers');
+const Post = require('./models/Post');
+const Project = require('./models/Project');
+
 
 const app = express();
 
@@ -26,7 +29,16 @@ app.use(methodOverride('_method',{
 }));
 
 // ROUTES
-app.get('/', postController.getAllPosts,projectController.getAllProjects);
+app.get('/', async (req,res) => {
+    const page = req.query.page || 1;
+    const PerPage = 3;
+    const posts = await Post.find({}).sort('-dateCreated').skip((page-1)*PerPage).limit(PerPage);
+    const projects = await Project.find({}).sort('-dateCreated').skip((page-1)*PerPage).limit(PerPage);
+    res.render('index',{
+        posts,
+        projects,
+    })
+});
 
 // BLOG POSTS
 app.get('/postspage', pageController.getPostPage); // okey

@@ -1,15 +1,5 @@
 const Post = require('../models/Post');
-const Project = require('../models/Project');
 const fs = require('fs');
-
-exports.getAllPosts = async (req, res) => {
-    const posts = await Post.find({}).sort('-dateCreated'); 
-    const projects = await Project.find({}).sort('-dateCreated');
-    res.render('index',{
-        posts,
-        projects
-    });
-}
 
 exports.getPost = async (req,res)=>{
     const post = await Post.findById(req.params.id);
